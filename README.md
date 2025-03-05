@@ -1,26 +1,11 @@
-Here's a comprehensive README for Dakshi Foundation's GitHub repository:
-
----
-
 # Dakshi Foundation 🌱
 
 **Empowering Communities | Driving Sustainable Change**
 
+![Dakshi Preview](https://github.com/user-attachments/assets/3bf2bd59-69d9-4a20-b395-823ab155d461)
+
+
 Welcome to the official GitHub repository of the **Dakshi Foundation**! We are a dedicated non-profit organization with a vision to empower individuals and communities through **Education, Sustainability, Healthcare, and Rural Development**. We believe in harnessing technology, collaboration, and community-driven efforts to create long-lasting positive change.
-
----
-
-## Table of Contents
-1. [About Us](#about-us)
-2. [Our Mission](#our-mission)
-3. [Programs](#programs)
-4. [Get Involved](#get-involved)
-5. [Contributing](#contributing)
-6. [Donate](#donate)
-7. [License](#license)
-8. [Contact](#contact)
-
----
 
 ## About Us
 
