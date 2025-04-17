@@ -11,7 +11,8 @@ import Volunteer from './pages/Involved';
 import Programs from './pages/Programs';
 import Errcomponent from './components/Errcomponent';
 import Privacy from './pages/Privacy'
-
+import ContactUs from './components/Getinvolved/Contact/ContactUs';
+import Careers from './pages/Careers';
 
 const App = () => (
   <Router>
@@ -24,6 +25,8 @@ const App = () => (
       <Route path="/partner" element={<Involved/>} />
       <Route path="/volunteer" element={<Volunteer/>} />
       <Route path="/program" element={<Programs/>} />
+      <Route path="/contactus" element={<ContactUs/>} />
+      <Route path="/careers" element={<Careers/>} />
       <Route path="/privacy-policy" element={<Privacy/>} />
     </Routes>
     <Footer />

@@ -6,7 +6,8 @@ module.exports = {
   theme: {
     extend: {
       backdropBlur: {
-        md: '5px', // Adjust the blur value as needed
+        xs:'2px',
+        md: '5px',
       },
     },
   },

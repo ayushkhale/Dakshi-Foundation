@@ -17,10 +17,11 @@ const Footer = () => {
           </div>
 
           <div>
-            <h2 className="font-bold text-lg">Contact Us</h2>
+            <h2 className="font-bold text-lg">Reach Us</h2>
             <ul className="mt-2 space-y-1">
-              <li><a href="mailto:info@dakshifoundation.in" className="underline">info@dakshifoundation.in</a></li>
+              <li className='underline'><Link to="/contactus">Contact Us</Link></li>
               <li><a href="tel:+919424499188" className="underline">+91 9424499188</a></li>
+              <li><a href="mailto:info@dakshifoundation.in" className="underline">info@dakshifoundation.in</a></li>
             </ul>
           </div>
 
@@ -28,8 +29,9 @@ const Footer = () => {
           <div>
             <h2 className="font-bold text-lg">Join us</h2>
             <ul className="mt-2 space-y-1">
-              <li className='underline'><Link to="/volunteer">Become a volunteer</Link></li>
               <li className='underline'><Link to="/donate">Make a donation</Link></li>
+              <li className='underline'><Link to="/partner">Become a Partner</Link></li>
+              <li className='underline'><Link to="/volunteer">Become a volunteer</Link></li>
             </ul>
           </div>
           
