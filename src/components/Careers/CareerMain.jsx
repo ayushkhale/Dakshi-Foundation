@@ -9,7 +9,7 @@ const CareerMain = () => {
         degree: '',
         branch: '',
         year_of_passing: '',
-        resume_url: null,
+        resume_url: '',
         interest: ''
     });
 
@@ -34,11 +34,6 @@ const CareerMain = () => {
         }
     };
 
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        setFormData({ ...formData, resume_url: file });
-    };
-
     const validateForm = () => {
         let errors = {};
         if (!formData.full_name) errors.full_name = 'Full Name is required';
@@ -53,44 +48,51 @@ const CareerMain = () => {
         return errors;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const validationErrors = validateForm();
         setErrors(validationErrors);
 
         if (Object.keys(validationErrors).length === 0) {
             setLoading(true);
-            const formPayload = new FormData();
-            for (let key in formData) {
-                formPayload.append(key, formData[key]);
-            }
 
-            fetch('http://192.168.1.2:8000/internship', {
-                method: 'POST',
-                body: formPayload,
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Form Submitted:", data);
-                    setFormData({
-                        full_name: '',
-                        email: '',
-                        phone_number: '',
-                        college_name: '',
-                        degree: '',
-                        branch: '',
-                        year_of_passing: '',
-                        resume_url: null,
-                        interest: ''
-                    });
-                    setWordCount(0);
-                    setLoading(false);
-                    setModalVisible(true);
-                    setErrors({});
-                })
-                .catch(error => {
-                    console.error("Submission Error:", error);
+            const payload = {
+                ...formData,
+                year_of_passing: parseInt(formData.year_of_passing),
+            };
+
+            try {
+                const response = await fetch('http://192.168.1.2:8000/intership-registration', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
                 });
+
+                const data = await response.json();
+                // console.log('Form Submitted:', data);
+
+                setFormData({
+                    full_name: '',
+                    email: '',
+                    phone_number: '',
+                    college_name: '',
+                    degree: '',
+                    branch: '',
+                    year_of_passing: '',
+                    resume_url: '',
+                    interest: ''
+                });
+
+                setWordCount(0);
+                setLoading(false);
+                setModalVisible(true);
+                setErrors({});
+            } catch (error) {
+                console.error('Submission Error:', error);
+                setLoading(false);
+            }
         }
     };
 
@@ -117,7 +119,7 @@ const CareerMain = () => {
                             { name: 'college_name', placeholder: 'College Name' },
                             { name: 'degree', placeholder: 'Degree' },
                             { name: 'branch', placeholder: 'Branch' },
-                            { name: 'year_of_passing', placeholder: 'Year of Passing', type: 'number' }
+                            { name: 'year_of_passing', placeholder: 'Year of Passing', type: 'number' },
                         ].map(({ name, placeholder, type = 'text' }) => (
                             <div key={name} className="flex flex-col">
                                 <input
@@ -134,12 +136,13 @@ const CareerMain = () => {
 
                         <div className="flex flex-col">
                             <input
-                                type="file"
+                                type="url"
                                 name="resume_url"
-                                onChange={handleFileChange}
+                                placeholder="Paste your resume link (Google Drive, Dropbox, etc.)"
+                                value={formData.resume_url}
+                                onChange={handleInputChange}
                                 className="border border-gray-300 p-3 rounded-md w-full"
                             />
-                            <p className='px-4 text-red-400'>Upload your resume</p>
                             {errors.resume_url && <span className="text-red-500 text-sm">{errors.resume_url}</span>}
                         </div>
 

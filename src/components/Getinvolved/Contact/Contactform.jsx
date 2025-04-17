@@ -49,7 +49,7 @@ const Contactform = () => {
         if (Object.keys(validationErrors).length === 0) {
             setLoading(true);
             try {
-                const response = await fetch('http://192.168.1.2:8000/contactus', {
+                const response = await fetch('http://192.168.1.2:8000/contact-us', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -58,7 +58,7 @@ const Contactform = () => {
                 });
 
                 const result = await response.json();
-                console.log("Message sent:", result);
+                // console.log("Message sent:", result);
 
                 setFormData({
                     name: '',

@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import teamData from '../../Data.json';
 
 const OurTeam = () => {
-  const [visibleMembers, setVisibleMembers] = useState(4); // Initially show 4 members
-  const [showMore, setShowMore] = useState(false); // To toggle "View More" and "Show Less"
+  const [visibleMembers, setVisibleMembers] = useState(4); 
+  const [showMore, setShowMore] = useState(false); 
 
   const handleViewMore = () => {
     setShowMore(!showMore);
-    setVisibleMembers(showMore ? 4 : teamData.team.length); // Toggle between 4 and all team members
+    setVisibleMembers(showMore ? 4 : teamData.team.length); 
   };
 
   return (
