@@ -14,6 +14,7 @@ import Privacy from './pages/Privacy'
 import ContactUs from './components/Getinvolved/Contact/ContactUs';
 import Careers from './pages/Careers';
 import Events from './pages/Events';
+import EventDetails from './components/Events/EventDetails.jsx';
 
 const App = () => (
   <Router>
@@ -30,6 +31,7 @@ const App = () => (
       <Route path="/careers" element={<Careers/>} />
       <Route path="/privacy-policy" element={<Privacy/>} />
       <Route path="/events" element={<Events/>} />
+      <Route path="/event-details" element={<EventDetails />} />
     </Routes>
     <Footer />
   </Router>

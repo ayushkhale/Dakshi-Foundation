@@ -5,6 +5,7 @@ import EventsMain from '../components/Events/EventsMain'
 const Events = () => {
   return (
     <div>
+        <EventsHero />
         <EventsMain />
     </div>
   )
