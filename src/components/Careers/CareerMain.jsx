@@ -62,7 +62,7 @@ const CareerMain = () => {
             };
 
             try {
-                const response = await fetch('http://192.168.1.2:8000/intership-registration', {
+                const response = await fetch(`${networkconfig.MAIN_URL}/intership-registration`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
