@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import networkconfig from '../../../networkconfig';
 
 const Contactform = () => {
     const [formData, setFormData] = useState({
@@ -49,7 +50,7 @@ const Contactform = () => {
         if (Object.keys(validationErrors).length === 0) {
             setLoading(true);
             try {
-                const response = await fetch('http://192.168.1.2:8000/contact-us', {
+                const response = await fetch(`${networkconfig.MAIN_URL}/contact-us`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

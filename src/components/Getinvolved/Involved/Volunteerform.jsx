@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import networkconfig from '../../../networkconfig';
 
 const Volunteerform = () => {
     // State management for form fields
@@ -67,7 +68,7 @@ const Volunteerform = () => {
             for (let key in formData) {
                 formPayload.append(key, formData[key]);
             }
-            fetch('http://192.168.1.2:8000/submit', {
+            fetch(`${networkconfig.MAIN_URL}/submit`, {
                 method: 'POST',
                 body: formPayload,
             })

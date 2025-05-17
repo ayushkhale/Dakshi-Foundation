@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+
 import { PDFDocument, rgb } from "pdf-lib";
 import templatePdf from '../../../reciept.pdf'
+import networkconfig from "../../../networkconfig";
 const Donateform = () => {
   const [formData, setFormData] = useState({
     Name: "",
@@ -118,7 +120,7 @@ const Donateform = () => {
     if (Object.keys(validationErrors).length === 0) {
       setIsLoading(true); // Show loader
       try {
-        const response = await fetch("http://192.168.1.2:8000/create-donation", {
+        const response = await fetch(`${networkconfig.MAIN_URL}/create-donation`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

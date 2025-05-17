@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import networkconfig from '../../../networkconfig';
 
 const Partnerform = () => {
 
@@ -49,7 +50,7 @@ const Partnerform = () => {
             setLoading(true); // Show loader on submission
 
             try {
-                const response = await fetch("http://192.168.1.2:8000/partner-data", {
+                const response = await fetch(`${networkconfig.MAIN_URL}partner-data`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

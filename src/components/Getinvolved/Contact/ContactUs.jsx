@@ -1,6 +1,7 @@
 import React from 'react'
-import ContactHero from './ContactHero'
 import Contactform from './Contactform'
+import ContactHero from './Contacthero'
+
 const ContactUs = () => {
   return (
     <div>
