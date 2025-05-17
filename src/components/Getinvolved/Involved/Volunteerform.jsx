@@ -67,7 +67,6 @@ const Volunteerform = () => {
             for (let key in formData) {
                 formPayload.append(key, formData[key]);
             }
-            // API call to submit form data
             fetch('http://192.168.1.2:8000/submit', {
                 method: 'POST',
                 body: formPayload,
@@ -75,7 +74,6 @@ const Volunteerform = () => {
             .then(response => response.json())
             .then(data => {
                 console.log("Form Data Submitted:", data);
-                // Reset form fields after successful submission
                 setFormData({
                     Name: '',
                     Fathers_Name: '',
@@ -85,13 +83,13 @@ const Volunteerform = () => {
                     Work_Experience: '',
                     Address: '',
                     About_You: '',
-                    Image: null, // Reset image path
+                    Image: null, 
                 });
 
-                setLoading(false); // Hide loader
-                setModalVisible(true); // Show success modal
+                setLoading(false); 
+                setModalVisible(true); 
 
-                setErrors({}); // Reset errors
+                setErrors({}); 
             })
             .catch(error => {
                 console.error("Error submitting form:", error);
@@ -99,7 +97,6 @@ const Volunteerform = () => {
         }
     };
 
-    // Close success modal
        const closeModal = () => {
         setModalVisible(false);
     };
@@ -247,7 +244,6 @@ const Volunteerform = () => {
                 </div>
             </section>
             
-            {/* Success Modal */}
             {modalVisible && (
                 <div className="fixed inset-0 flex justify-center items-center bg-gray-800 bg-opacity-50 z-50">
                     <div className="bg-white p-8 rounded-lg text-center max-w-sm w-full">

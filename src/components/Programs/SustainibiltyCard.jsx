@@ -1,22 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import networkconfig from '../../networkconfig';
 
 const SustainabilityCard = () => {
+  const [images, setImages] = useState([]);
 
-  const images = [
-    "https://i.ibb.co/WPwmmSh/IMG-202410293-230936482.jpg",
-    "https://i.ibb.co/khYxrH6/IMG-20241019-WA0013.jpg",
-    "https://i.ibb.co/wRxJ19H/IMG-20241019-WA0014.jpg",
-    "https://i.ibb.co/tbNnKVk/IMG-20241019-WA0015.jpg",
-    "https://i.ibb.co/RNqWkwG/IMG-20241019-WA0030-1.jpg",
-    "https://i.ibb.co/HHf6Bqp/IMG-20241019-WA0035.jpg"
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await fetch(`${networkconfig.BASE_URL}/program-images`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ program_field: "SST" }),
+        });
 
-  ];
+        const result = await response.json();
 
+        if (result.success) {
+          const imageUrls = result.data.map((item) => item.image_url);
+          setImages(imageUrls);
+        } else {
+          console.error("Failed to fetch images");
+        }
+      } catch (error) {
+        console.error("Error fetching images:", error);
+      }
+    };
+
+    fetchImages();
+  }, []);
 
   return (
     <div className="sm:mb-8 lg:bg-white lg:h-full">
       <div className="lg:grid lg:grid-cols-5 lg:bg-white lg:h-full mt-5">
-        {/* Card content */}
         <div className="px-4 sm:px-8 sm:py-8 max-w-full sm:max-w-md m-auto lg:col-span-2 mt-8 mb-8 sm:mt-16 sm:mb-16 lg:w-full lg:mb-8 lg:px-5 lg:pt-5 lg:pb-5 lg:max-w-lg">
           <h2 className="text-3xl sm:text-4xl md:text-5xl text-green-600 font-bold">
             Sustainability
@@ -37,7 +54,6 @@ const SustainabilityCard = () => {
           </p>
         </div>
 
-        {/* Full-width image on larger screens */}
         <div className="hidden relative lg:block lg:col-span-3">
           <img
             className="absolute inset-0 w-full h-full object-cover object-center rounded-xl"
@@ -47,7 +63,6 @@ const SustainabilityCard = () => {
         </div>
       </div>
 
-      {/* Focus Areas */}
       <div className="py-6 sm:px-8 sm:py-2 max-w-full sm:max-w-md mx-5 lg:py-6 lg:max-w-7xl lg:mt-8 mb-8">
         <h3 className="mt-4 text-xl sm:text-2xl font-semibold text-green-600">
           Key Focus Areas
@@ -109,18 +124,22 @@ const SustainabilityCard = () => {
       </div>
 
       <div className="p-5 overflow-x-auto whitespace-nowrap">
-        {images.map((src, index) => (
-          <div
-            key={index}
-            className="relative inline-block m-2 overflow-hidden transition-opacity duration-300"
-          >
-            <img
-              src={src}
-              alt={`Gallery image ${index + 1}`}
-              className="h-60 w-80 object-cover"
-            />
-          </div>
-        ))}
+        {images.length > 0 ? (
+          images.map((src, index) => (
+            <div
+              key={index}
+              className="relative inline-block m-2 overflow-hidden transition-opacity duration-300"
+            >
+              <img
+                src={src}
+                alt={`Gallery image ${index + 1}`}
+                className="h-60 w-80 object-cover transition-opacity duration-300"
+              />
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-500">Loading images...</p>
+        )}
       </div>
     </div>
   );

@@ -1,18 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import networkconfig from '../../networkconfig';
 
 const RuralDev = () => {
+  const [images, setImages] = useState([]);
 
-  const images = [
-    "https://i.ibb.co/4Y5wygD/IMG-202410293-230759956.jpg",
-    "https://i.ibb.co/xLTWhhj/IMG-20241019-WA0018.jpg",
-    "https://i.ibb.co/MkvfwhG/IMG-20241019-WA0023.jpg",
-    "https://i.ibb.co/2WTgVFP/IMG-20241019-WA0032.jpg",
-    "https://i.ibb.co/4pZqJ00/IMG-20241019-WA0043.jpg"
-  ];
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await fetch(`${networkconfig.BASE_URL}/program-images`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ program_field: "RAD" }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          const imageUrls = result.data.map((item) => item.image_url);
+          setImages(imageUrls);
+        } else {
+          console.error("Failed to fetch images");
+        }
+      } catch (error) {
+        console.error("Error fetching images:", error);
+      }
+    };
+
+    fetchImages();
+  }, []);
 
   return (
     <div className="sm:mb-8 lg:bg-white lg:h-full">
-      <div className="sm:lg:grid lg:grid-cols-5 md:grid-cols-none lg:bg-white lg:h-full mt-5">
+      <div className="lg:grid lg:grid-cols-5 lg:bg-white lg:h-full mt-5">
         {/* Card content */}
         <div className="px-4 sm:px-8 sm:py-8 max-w-full sm:max-w-md m-auto lg:col-span-2 mt-8 mb-8 sm:mt-16 sm:mb-16 lg:w-full lg:mb-8 lg:px-5 lg:pt-5 lg:pb-5 lg:max-w-lg">
           <h2 className="text-3xl sm:text-4xl md:text-5xl text-amber-900 font-bold">
@@ -116,19 +137,24 @@ const RuralDev = () => {
         </ul>
       </div>
 
+      {/* Dynamic fetched images gallery */}
       <div className="p-5 overflow-x-auto whitespace-nowrap">
-        {images.map((src, index) => (
-          <div
-            key={index}
-            className="relative inline-block m-2 overflow-hidden transition-opacity duration-300"
-          >
-            <img
-              src={src}
-              alt={`Gallery image ${index + 1}`}
-              className="h-60 w-80 object-cover transition-opacity duration-300"
-            />
-          </div>
-        ))}
+        {images.length > 0 ? (
+          images.map((src, index) => (
+            <div
+              key={index}
+              className="relative inline-block m-2 overflow-hidden transition-opacity duration-300"
+            >
+              <img
+                src={src}
+                alt={`Gallery image ${index + 1}`}
+                className="h-60 w-80 object-cover transition-opacity duration-300 rounded-lg"
+              />
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-500">Loading images...</p>
+        )}
       </div>
     </div>
   );

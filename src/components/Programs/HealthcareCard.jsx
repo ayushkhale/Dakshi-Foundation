@@ -1,15 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import networkconfig from '../../networkconfig';
 
 const HealthcareCard = () => {
+  const [images, setImages] = useState([]);
 
-  const images = [
-    "https://i.ibb.co/NC3NCPx/7977955d-7079-4830-86f9-ceb7e573dc00.jpg",
-    "https://i.ibb.co/VJZ5XqX/IMG-20241019-WA0033.jpg",
-    "https://i.ibb.co/g9Spg9F/IMG-20241019-WA0029.jpg",
-    "https://i.ibb.co/k3chSPP/IMG-20241019-WA0031.jpg",
-    "https://i.ibb.co/V9Y5bpK/7dea372f-c7ee-464c-97de-ecc4f8ad011f.jpg",
-    "https://i.ibb.co/Qvdtrg1/13448365203-877fbeac55-o.jpg",
-  ];
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await fetch(`${networkconfig.BASE_URL}/program-images`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ program_field: "HLT" }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          const imageUrls = result.data.map((item) => item.image_url);
+          setImages(imageUrls);
+        } else {
+          console.error("Failed to fetch images");
+        }
+      } catch (error) {
+        console.error("Error fetching images:", error);
+      }
+    };
+
+    fetchImages();
+  }, []);
 
   return (
     <div className="sm:mb-8 lg:bg-white lg:h-full">
@@ -107,18 +127,22 @@ const HealthcareCard = () => {
       </div>
 
       <div className="p-5 overflow-x-auto whitespace-nowrap">
-        {images.map((src, index) => (
-          <div
-            key={index}
-            className="relative inline-block m-2 overflow-hidden transition-opacity duration-300"
-          >
-            <img
-              src={src}
-              alt={`Gallery image ${index + 1}`}
-              className="h-60 w-80 object-cover transition-opacity duration-300"
-            />
-          </div>
-        ))}
+        {images.length > 0 ? (
+          images.map((src, index) => (
+            <div
+              key={index}
+              className="relative inline-block m-2 overflow-hidden transition-opacity duration-300"
+            >
+              <img
+                src={src}
+                alt={`Gallery image ${index + 1}`}
+                className="h-60 w-80 object-cover transition-opacity duration-300"
+              />
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-500">Loading images...</p>
+        )}
       </div>
     </div>
   );
