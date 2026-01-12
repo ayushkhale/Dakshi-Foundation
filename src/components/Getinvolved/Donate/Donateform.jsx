@@ -145,7 +145,7 @@ const Donateform = () => {
             const orderId = response.razorpay_order_id;
             const signature = response.razorpay_signature;
   
-            fetch('http://192.168.1.2:8000/payment-verification', {
+            fetch(`${networkconfig.MAIN_URL}/payment-verification`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

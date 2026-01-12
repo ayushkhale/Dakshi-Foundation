@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import networkconfig from '../../networkconfig';
 
 const CareerMain = () => {
     const [formData, setFormData] = useState({

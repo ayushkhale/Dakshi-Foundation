@@ -31,10 +31,10 @@ const Partnerform = () => {
     const validateForm = () => {
         let errors = {};
         if (!formData.companyName) errors.companyName = 'Company Name is required';
-        if (!formData.contactPersonName) errors.contactPersonName = 'Father\'s Name is required';
+        if (!formData.contactPersonName) errors.contactPersonName = 'Contact Person Name is required';
         if (!formData.phoneNumber) errors.phoneNumber = 'Mobile Number is required';
         if (!formData.email) errors.email = 'email is required';
-        if (!formData.websiteLink) errors.websiteLink = 'websiteLink is required';
+        if (!formData.websiteLink) errors.websiteLink = 'website Link is required';
         if (!formData.missionStatement) errors.missionStatement = 'Working Experience is required'; // Validate working experience
         if (!formData.address) errors.address = 'address is required'; // Validate address
         return errors;
@@ -50,7 +50,7 @@ const Partnerform = () => {
             setLoading(true); // Show loader on submission
 
             try {
-                const response = await fetch(`${networkconfig.MAIN_URL}partner-data`, {
+                const response = await fetch(`${networkconfig.MAIN_URL}/partner-data`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
