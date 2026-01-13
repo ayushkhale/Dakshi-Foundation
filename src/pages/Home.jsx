@@ -3,6 +3,7 @@ import HeroSection from '../components/Home Components/HeroSection'
 import AboutSection from '../components/Home Components/AboutSection'
 import ImpactSection from '../components/Home Components/ImpactSection'
 import PartnersSection from '../components/Home Components/PartnersSection'
+import GovtImages from '../components/Home Components/GovtImages'
 import Foundermessage from '../components/Home Components/Foundermessage'
 
 const Home = () => {
@@ -18,6 +19,7 @@ const Home = () => {
       <Foundermessage />
       <PartnersSection />
       <ImpactSection />
+      <GovtImages />
     </div>
   )
 }

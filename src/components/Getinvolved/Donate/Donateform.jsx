@@ -38,7 +38,7 @@ const Donateform = () => {
       </div>
     </div>
   );
-  
+
 
 
   const [errors, setErrors] = useState({});
@@ -72,25 +72,25 @@ const Donateform = () => {
       const pdfDoc = await PDFDocument.load(templatePdfBytes);
       const pages = pdfDoc.getPages();
       const firstPage = pages[0];
-  
+
       const textOptions = { size: 12, color: rgb(0, 0, 0) };
-  
+
       const name = formData.Name || "N/A";
       const address = formData.Address || "N/A";
       const amount = formData.Donation || "N/A";
       const toward = formData.Toward || "N/A";
       const remark = formData.Remark || "N/A";
-  
+
       const centerX = firstPage.getWidth() / 2;
       const startY = 600;
       const lineSpacing = 20;
-  
+
       const drawCenteredText = (text, yOffset) => {
         const textWidth = text.length * 5;
         const x = centerX - textWidth / 2;
         firstPage.drawText(text, { x, y: yOffset, ...textOptions });
       };
-  
+
       drawCenteredText(`Name: ${name}`, startY);
       drawCenteredText(`Address: ${address}`, startY - lineSpacing);
       drawCenteredText(`Amount: Rs.${amount}`, startY - lineSpacing * 2);
@@ -98,7 +98,7 @@ const Donateform = () => {
       drawCenteredText(`Remarks: ${remark}`, startY - lineSpacing * 4);
       drawCenteredText(`Receipt No: ${receipt}`, startY - lineSpacing * 5);
       drawCenteredText(`Date: ${date}`, startY - lineSpacing * 6);
-  
+
       const modifiedPdfBytes = await pdfDoc.save();
       const blob = new Blob([modifiedPdfBytes], { type: "application/pdf" });
       const link = document.createElement("a");
@@ -111,12 +111,12 @@ const Donateform = () => {
       setIsLoading(false); // Hide loader
     }
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
     setErrors(validationErrors);
-  
+
     if (Object.keys(validationErrors).length === 0) {
       setIsLoading(true); // Show loader
       try {
@@ -127,29 +127,31 @@ const Donateform = () => {
           },
           body: JSON.stringify(formData),
         });
-  
+
         if (!response.ok) {
           throw new Error("Something went wrong with the donation request.");
         }
-  
+
         const data = await response.json();
+        console.log("Razorpay order data:", data);
         const currentDate = new Date().toLocaleDateString(); // Get current date in readable format
-  
+
         const options = {
-          key: "rzp_test_bVnwqq5GvuvOi4",
-          order_id: data.order.id,
-          amount: data.order.amount,
+          key: "rzp_live_emReV3t8ZxYOPW",
+          amount: data.order.amount, // amount in paise
           currency: "INR",
+          name: "Donation Trust", // REQUIRED
+          description: "Donation Payment", // REQUIRED
+          order_id: data.order.id,
+
           handler: function (response) {
             const paymentId = response.razorpay_payment_id;
             const orderId = response.razorpay_order_id;
             const signature = response.razorpay_signature;
-  
+
             fetch(`${networkconfig.MAIN_URL}/payment-verification`, {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
+              headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 payment_id: paymentId,
                 order_id: orderId,
@@ -157,23 +159,30 @@ const Donateform = () => {
                 data: formData
               }),
             })
-              .then(response => response.json())
+              .then(res => res.json())
               .then(data => {
-                console.log(data.DATA)
-                const receipt= data.DATA.payment_id
-                generateCertificate(formData, receipt, currentDate); 
+                const receipt = data.DATA.payment_id;
+                console.log("well till here", receipt);
+                generateCertificate(formData, receipt, currentDate);
                 setModalMessage("Payment Successful! Your donation receipt is being generated.");
-                setIsModalOpen(true); 
-              })
-              .catch((error) => {
-                console.error('Error:', error);
+                setIsModalOpen(true);
               });
           },
+
+          prefill: {
+            name: formData.Name,
+            email: formData.Email,
+            contact: formData.Mobile_No,
+          },
+
+          theme: {
+            color: "#EF4444"
+          }
         };
+
         const rzp = new window.Razorpay(options);
         rzp.open();
-  
-        console.log("Donation submitted successfully:", data);
+
         setFormData({
           Name: "",
           Email: "",
@@ -186,22 +195,18 @@ const Donateform = () => {
         });
       } catch (error) {
         console.error("Error during donation submission:", error);
-        alert("There was an error processing your donation. Please try again later.");
       } finally {
         setIsLoading(false); // Hide loader
       }
     }
-  };  
-
-
-  
+  };
 
   return (
     <section id="donate-form" className="py-16">
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 className="text-4xl font-bold text-center mb-8">Make a Donation</h2>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-4xl font-bold text-center mb-8">Make a Donation</h2>
 
-      {isLoading && <Loader />} {/* Show loader */}
+        {isLoading && <Loader />} {/* Show loader */}
         <form className="max-w-lg mx-auto grid grid-cols-1 gap-6" onSubmit={handleSubmit}>
           {/* Full Name and Email (two items in one line) */}
           <div className="grid grid-cols-2 gap-6">
@@ -324,7 +329,7 @@ const Donateform = () => {
         </form>
       </div>
       {isModalOpen && <Modal message={modalMessage} onClose={() => setIsModalOpen(false)} />} {/* Show modal */}
-      </section>
+    </section>
   );
 };
 
